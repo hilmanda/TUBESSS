@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def gaussJordan(a,b):
     a=np.array(a,float)
     b=np.array(b,float)
@@ -28,13 +27,26 @@ def gaussJordan(a,b):
             b[j] -= factor*b[i]
     return a,b
 
-a= [[0,2,0,1],[2,2,3,2],[4,-3,0,1],[5,1,-6,-5]]
-b= [0,-2,-7,6]
+# a= [[0,2,0,1],[2,2,3,2],[4,-3,0,1],[5,1,-6,-5]]
+# b= [0,-2,-7,6]
 
-A,X = gaussJordan(a,b)
+n=int(input("Masukkan ukuran Matriks : "))
+a=np.zeros((n,n),float)
+b=np.zeros(n,float)
 
-print("\nMatrix Eselon Baris Tereduksi : ")
-print(A)
+print("Masukkan Matriks A : ")
+for i in range (n):
+    for j in range(n):
+        a[i][j]=float(input("a[%d][%d] = " %(i,j)))
+
+print("Masukkan Matriks B : ")
+for i in range (n):
+    b[i]=float(input("a[%d] = " %(i)))
+
+matrixHasil,X = gaussJordan(a,b)
+
+print("\nMatrix Setelah Eliminasi Gauss-Jordan : ")
+print(matrixHasil)
 
 print()
 print("Hasil Eliminasi Gauss-Jordan : ")
