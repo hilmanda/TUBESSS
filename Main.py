@@ -28,32 +28,44 @@ def inputManual():
 def gauss():
     a,b=menuInput()
     n=len(b)
+    A=np.column_stack((a,b))
     x=np.zeros(n,float)
 
-    for i in range(n):
-        #partial pivoting
-        if np.fabs(a[i,i]) == 0:
-            for j in range(i+1,n):
-                if np.fabs(a[j,i]) > np.fabs(a[i,i]):
-                    a[[i,j]] = a[[j,i]]
-                    b[[i,j]] = b[[j,i]]
-                    break
+    #PIVOTING
+    for i in range(0, n):
+       # Mencari kolom dengan nilai tertinggi
+       maxE1 = abs(A[i][i])
+       maxRow = i
+       for k in range(i+1, n):
+           # membandingkan baris-baris, baris pertama tidak boleh 0
+           if abs(A[k][i]) < maxE1 or maxE1 == 0:
+               maxE1 = abs(A[k][i])
+               maxRow = k
+       # Tukar baris akhir dengan baris yang mengandung 0 (kolom demi kolom)
+       for k in range(i, n+1):
+           tmp = A[maxRow][k]
+           A[maxRow][k] = A[i][k]
+           A[i][k] = tmp
+       # buat semua baris dibawah 1 jadi 0
+       for k in range(i+1, n):
+           c = -A[k][i]/A[i][i]
+           for j in range(i, n+1):
+               if i == j:
+                   A[k][j] = 0
+               else:
+                   A[k][j] += c * A[i][j]
 
-        for j in range(i+1,n):
-            if a[j,i] == 0: continue
-            factor = a[i,i]/a[j,i]
-            for k in range(i,n):
-                a[j,k] = a[i,k] - a[j,k]*factor 
-            b[j] = b[i]-b[i]*factor
-
-    #subtitusi terbalik
-    x[n-1]=b[n-1]/a[n-1,n-1]
-    for i in range (n-2,-1,-1):
-        sum=0
-        for j in range(i+1,n):
-            sum+=a[i,j] *x[j]
-        x[i]=(b[i]-sum)/a[i,i]
-    return a,x   
+    # subtitusi mundur
+    x = [0 for i in range(n)]
+    for i in range(n - 1, -1, -1):
+        if A[i][i] == 0:
+            return [0 for i in range(n)]
+        else:
+            x[i] = A[i][n]/A[i][i]
+            for k in range(i-1, -1, -1):
+                A[k][n] -= A[k][i]*x[i]
+    a,b=np.hsplit(A,[n])
+    return a,x
 
 #eliminasi gauss-Jordan sudah fix
 def gaussJordan():
@@ -79,7 +91,7 @@ def gaussJordan():
             a[i,j] /= pivot
         b[i] /= pivot
 
-        #eliminasi
+        #subtitusi
         for j in range(n):
             if j == i or a[j,i] == 0: continue
             factor = a[j,i]
