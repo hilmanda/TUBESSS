@@ -1,10 +1,10 @@
 import numpy as np
-import sys
+from sys import exit
 
 #input matrix dari file, edit file inputA.txt dan inputB.txt jika ingin mengganti matrix
 def inputFile():
-    a= np.loadtxt("inputA.txt", dtype='f', delimiter=' ')
-    b= np.loadtxt("inputB.txt", dtype='f', delimiter=' ')
+    a= np.loadtxt("bin\inputA.txt", dtype='f', delimiter=' ')
+    b= np.loadtxt("bin\inputB.txt", dtype='f', delimiter=' ')
     return a,b
 
 ##input matrix dari console
@@ -82,11 +82,7 @@ def gaussJordan():
                     b[i],b[j] = b[j],b[i]
                     break
 
-        #pembagian baris-baris pivot
         pivot = a[i,i]
-        #counter pembagi 0 jika ingin digunakan tapi fungsi encounterHasil() jadi useless
-        # if pivot==0:
-        #     pivot=1
         for j in range(i,n):
             a[i,j] /= pivot
         b[i] /= pivot
@@ -111,7 +107,7 @@ def encounterHasil(A,B):
     if np.all(np.isinf(B)):
         print('#Hasil Eliminasi :\nTidak ada Solusi')
         #simpan output kedalam file
-        with open('output.txt', 'a') as out:
+        with open('bin\output.txt', 'a') as out:
             print('#Hasil Eliminasi :\nTidak ada Solusi',file=out)
             print('---------------------------------------------',file=out)
         return
@@ -119,7 +115,7 @@ def encounterHasil(A,B):
     elif np.all(np.isnan(B)):
         print('#Hasil Eliminasi :\nMemiliki Solusi Banyak')
         #simpan output kedalam file
-        with open('output.txt', 'a') as out:
+        with open('bin\output.txt', 'a') as out:
             print('#Hasil Eliminasi :\nMemiliki Solusi Banyak',file=out)
             print('---------------------------------------------',file=out)
         return
@@ -133,7 +129,7 @@ def encounterHasil(A,B):
         print("X%d = %0.1f" %(j+1,B[j]) , end='\n')
     
     #save hasil ke file output.txt
-    with open('output.txt', 'ab') as out:
+    with open('bin\output.txt', 'ab') as out:
         np.savetxt(out,A,fmt='%0.1f',delimiter=' ',header='Matrix A Setelah OBE')
         np.savetxt(out,B,fmt='%0.1f',delimiter='\n',header='Hasil Eliminasi',footer='---------------------------------------------')
 
@@ -148,7 +144,7 @@ def menuUtama():
     
     if opsi==0:
         print('Program Dihentikan!')
-        sys.exit()
+        exit()
     elif opsi==1 :
         a,b = gaussJordan()
     elif opsi==2 :
@@ -163,11 +159,12 @@ def menuInput():
     print('===== MENU INPUT =====')
     print('1. Input Manual')
     print('2. Input dari File')
-    print('0. Kembali Ke Menu Utama')
+    print('0. Stop Program')
     opsi=int(input('Pilih : '))
     
     if opsi==0:
-        menuUtama()
+        print('Program Dihentikan!')
+        exit()
     elif(opsi==1):
         a,b = inputManual()
     elif(opsi==2):
