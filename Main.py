@@ -16,11 +16,11 @@ def inputManual():
     print("Masukkan Matriks A : ")
     for i in range (n):
         for j in range(n):
-            a[i][j]=float(input("a[%d][%d] = " %(i,j)))
+            a[i][j]=float(input("a[%d][%d] = " %(i+1,j+1)))
 
     print("Masukkan Matriks B : ")
     for i in range (n):
-        b[i]=float(input("b[%d] = " %(i)))
+        b[i]=float(input("b[%d] = " %(i+1)))
 
     return a,b
 
@@ -56,8 +56,8 @@ def gauss():
                    A[k][j] += c * A[i][j]
 
     # subtitusi mundur
-    x = [0 for i in range(n)]
-    for i in range(n - 1, -1, -1):
+
+    for i in range(n-1, -1, -1):
         if A[i][i] == 0:
             return [0 for i in range(n)]
         else:
