@@ -5,3 +5,9 @@
   <li>120140199</li>
   <li>120140050</li>
  </ul>
+ 
+ <h2>Library yang digunakan :</h2>
+ <ul>
+  <li>Numpy</li>
+  <li>sys</li>
+ </ul>
